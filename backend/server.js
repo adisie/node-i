@@ -4,6 +4,10 @@ const mongoose = require('mongoose')
 
 const app = express()
 
+// setings
+app.use(express.json())
+app.use(express.urlencoded({extended: true}))
+
 mongoose.connect(process.env.MONGODB_URI)
   .then(()=>{
     console.log('CONNECTED')
@@ -15,4 +19,8 @@ mongoose.connect(process.env.MONGODB_URI)
     console.log(err)
     process.exit(1)
   })
+
+// routes
+// user routes
+app.use('/api/user',require('./routes/userRoutes'))
 
