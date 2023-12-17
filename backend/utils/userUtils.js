@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 
 // max age
-const MAX_AGE = 60 * 30 
+const MAX_AGE = 60 * 60 * 24
 
 // error handler
 const errorHandler = err => {
