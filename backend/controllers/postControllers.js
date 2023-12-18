@@ -6,7 +6,30 @@ const Post = require('../models/postModel')
 // get all posts
 const getAllPosts = async (req,res) => {
     try{
-        const posts = await Post.find().sort({createdAt: -1})
+        const posts = await Post.aggregate([
+            {
+                $lookup: {
+                    from: 'users',
+                    localField: 'author',
+                    foreignField: '_id',
+                    as: 'username'
+                }
+            },
+            {
+                $project: {
+                    body: 1,
+                    createdAt: 1,
+                    author: {$arrayElemAt: ["$username.username",0]}
+                }
+            },
+            {
+                $sort: {
+                    createdAt: -1,
+                }
+            }
+
+        ])
+
         res.status(200).json({posts})
     }catch(err){
         res.status(400).json({
